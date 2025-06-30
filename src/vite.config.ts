@@ -14,6 +14,28 @@ export default defineConfig(({ mode }) => {
         alias: {
           '@': path.resolve(__dirname, '.'),
         }
+      },
+      build: {
+        rollupOptions: {
+          output: {
+            manualChunks: (id) => {
+              // Create a separate chunk for the words.json file
+              if (id.includes('words.json')) {
+                return 'words-data';
+              }
+              // Split React and React DOM into their own chunk
+              if (id.includes('node_modules/react') || id.includes('node_modules/react-dom')) {
+                return 'react-vendor';
+              }
+              // Split other vendor libraries
+              if (id.includes('node_modules')) {
+                return 'vendor';
+              }
+            }
+          }
+        },
+        // Increase chunk size warning limit for word games with large dictionaries
+        chunkSizeWarningLimit: 2000
       }
     };
 });

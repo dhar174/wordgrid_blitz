@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, Suspense, lazy } from 'react';
 import { GameState, GameStatus, Theme } from './types';
 import { useGameEngine } from './hooks/useGameEngine';
-import GameScreen from './components/GameScreen';
-import EndScreen from './components/EndScreen';
 import ThemeSelector from './components/ThemeSelector';
 import { THEMES } from './constants';
+
+// Lazy load heavy components
+const GameScreen = lazy(() => import('./components/GameScreen'));
+const EndScreen = lazy(() => import('./components/EndScreen'));
 
 const App: React.FC = () => {
     const [theme, setTheme] = useState<Theme>(() => {
@@ -22,20 +24,26 @@ const App: React.FC = () => {
         switch (gameState.status) {
             case GameStatus.PLAYING:
                 return (
-                    <GameScreen
-                        theme={theme}
-                        gameState={gameState}
-                        currentWord={currentWord}
-                        path={path}
-                        onInteractionStart={handleInteractionStart}
-                        onInteractionMove={handleInteractionMove}
-                        onInteractionEnd={handleInteractionEnd}
-                        onApplyPowerUp={applyPowerUp}
-                        lastBonus={lastBonus}
-                    />
+                    <Suspense fallback={<div className="text-center text-slate-300">Loading game...</div>}>
+                        <GameScreen
+                            theme={theme}
+                            gameState={gameState}
+                            currentWord={currentWord}
+                            path={path}
+                            onInteractionStart={handleInteractionStart}
+                            onInteractionMove={handleInteractionMove}
+                            onInteractionEnd={handleInteractionEnd}
+                            onApplyPowerUp={applyPowerUp}
+                            lastBonus={lastBonus}
+                        />
+                    </Suspense>
                 );
             case GameStatus.FINISHED:
-                return <EndScreen theme={theme} gameState={gameState} onRestart={startGame} />;
+                return (
+                    <Suspense fallback={<div className="text-center text-slate-300">Loading...</div>}>
+                        <EndScreen theme={theme} gameState={gameState} onRestart={startGame} />
+                    </Suspense>
+                );
             case GameStatus.READY:
             default:
                 return (
