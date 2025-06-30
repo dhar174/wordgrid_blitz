@@ -1,0 +1,6 @@
+{
+  "name": "WordGrid Blitz",
+  "description": "A fast-paced word finding game. Find as many words as you can in a 5x5 grid of letters. Every new word adds time to the clock. Use power-ups to maximize your score.",
+  "requestFramePermissions": [],
+  "prompt": ""
+}
