@@ -1,4 +1,10 @@
-import words from '../utils/words.json';
+let cachedSet: Set<string> | null = null;
 
-const typedWords: string[] = words;
-export const wordSet = new Set<string>(typedWords);
+export const loadWordSet = async (): Promise<Set<string>> => {
+  if (cachedSet) {
+    return cachedSet;
+  }
+  const words: string[] = (await import('../utils/words.json')).default;
+  cachedSet = new Set<string>(words);
+  return cachedSet;
+};

@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { GameState, GameStatus, Tile, PowerUpType } from '../types';
 import { generateGrid, areTilesAdjacent, shuffleGrid } from '../utils/gridHelper';
-import { wordSet } from '../services/wordlist';
+import { loadWordSet } from '../services/wordlist';
 import { BASE_INITIAL_TIME, TIME_PER_LEVEL, SCORE_VALUES, TIME_BONUSES, XP_PER_LEVEL, BASE_XP_PER_GAME } from '../constants';
 
 const getInitialState = (): GameState => {
@@ -30,6 +30,7 @@ const getInitialState = (): GameState => {
 
 export const useGameEngine = () => {
     const [gameState, setGameState] = useState<GameState>(getInitialState);
+    const [wordSet, setWordSet] = useState<Set<string> | null>(null);
     const [path, setPath] = useState<Tile[]>([]);
     const [isDragging, setIsDragging] = useState(false);
     const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -43,6 +44,10 @@ export const useGameEngine = () => {
     const lastBonusTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const currentWord = path.map(tile => tile.letter).join('');
+
+    useEffect(() => {
+        loadWordSet().then(setWordSet);
+    }, []);
 
     const stopTimer = useCallback(() => {
         if (timerRef.current) {
@@ -114,7 +119,7 @@ export const useGameEngine = () => {
     }, []);
 
     const submitWord = useCallback((word: string) => {
-        if (word.length < 3 || gameState.wordsFound.includes(word) || !wordSet.has(word.toLowerCase())) {
+        if (!wordSet || word.length < 3 || gameState.wordsFound.includes(word) || !wordSet.has(word.toLowerCase())) {
             if (word.length >= 3) {
                  setInvalidWordCount(prev => {
                     const newCount = prev + 1;
@@ -161,7 +166,7 @@ export const useGameEngine = () => {
         if (comboTimeoutRef.current) clearTimeout(comboTimeoutRef.current);
         comboTimeoutRef.current = setTimeout(resetCombo, 3000);
 
-    }, [gameState.wordsFound, gameState.combo, resetCombo]);
+    }, [wordSet, gameState.wordsFound, gameState.combo, resetCombo]);
     
     const applyPowerUp = useCallback((type: PowerUpType) => {
         if (!gameState.powerUps[type].isAvailable) return;
