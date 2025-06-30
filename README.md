@@ -32,14 +32,17 @@ WordGrid Blitz is a fast-paced, interactive word puzzle game built with TypeScri
    yarn install
    ```
 
-3. **Start the development server**
+3. **Set up environment variables**
+   Create a `.env.local` file and set `GEMINI_API_KEY` to your Gemini API key.
+
+4. **Start the development server**
    ```bash
-   npm start
+   npm run dev
    # or
-   yarn start
+   yarn dev
    ```
 
-4. **Open in your browser:**  
+5. **Open in your browser:**
    Visit `http://localhost:3000` (or as indicated in your terminal) to play the game locally.
 
 ### Building for Production
