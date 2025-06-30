@@ -1,4 +1,3 @@
-```markdown
 # WordGrid Blitz - Code Improvement Recommendations
 
 This document outlines recommended improvements for the WordGrid Blitz game codebase, based on an analysis conducted on [Date of Analysis, e.g., YYYY-MM-DD]. The suggestions aim to enhance code quality, maintainability, performance, and user experience.
@@ -160,4 +159,4 @@ These are suggestions for larger improvements that are out of scope for immediat
 
 ---
 This document should serve as a guide for ongoing development and improvement efforts.
-```
+
