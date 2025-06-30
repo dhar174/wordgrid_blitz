@@ -1,3 +1,4 @@
 import words from '../utils/words.json';
 
-export const wordSet = new Set(words);
+const typedWords: string[] = words;
+export const wordSet = new Set<string>(typedWords);
