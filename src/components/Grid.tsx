@@ -38,17 +38,16 @@ const Grid: React.FC<GridProps> = ({ theme, grid, path, onInteractionStart, onIn
   const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
     e.preventDefault(); // Prevent scrolling
     const touch = e.touches[0];
-    const element = document.elementFromPoint(touch.clientX, touch.clientY);
-    if (element && element.getAttribute('data-testid')?.startsWith('tile-')) {
-        const [,,rowStr,colStr] = element.getAttribute('data-testid')?.split('-') || [];
-        if(rowStr && colStr) {
-            const row = parseInt(rowStr, 10);
-            const col = parseInt(colStr, 10);
-            if (grid[row] && grid[row][col]) {
-                const targetTile = grid[row][col];
-                onInteractionMove(targetTile);
-            }
-        }
+    const element = document.elementFromPoint(touch.clientX, touch.clientY) as HTMLElement | null;
+    const rowStr = element?.dataset.row;
+    const colStr = element?.dataset.col;
+    if (rowStr !== undefined && colStr !== undefined) {
+      const row = parseInt(rowStr, 10);
+      const col = parseInt(colStr, 10);
+      if (grid[row] && grid[row][col]) {
+        const targetTile = grid[row][col];
+        onInteractionMove(targetTile);
+      }
     }
   };
 
