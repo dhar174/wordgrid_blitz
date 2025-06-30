@@ -1,0 +1,33 @@
+/* Global styles for WordGrid Blitz */
+body {
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Animation used when score bonuses appear */
+@keyframes bonus-popup {
+  0% {
+    transform: translate(-50%, 0) scale(0.8);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50px) scale(1.2);
+    opacity: 0;
+  }
+}
+
+.animate-bonus-popup {
+  animation: bonus-popup 1.5s ease-out forwards;
+}
+
+/* Screen reader only utility class */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
