@@ -1,2 +1,3 @@
-import words from '../utils/words';   // or a plain relative path
+import words from '../utils/words.json';
+
 export const wordSet = new Set(words);
