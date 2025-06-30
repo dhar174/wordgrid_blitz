@@ -30,6 +30,8 @@ const Tile: React.FC<TileProps> = ({ theme, tile, isSelected, onMouseDown, onMou
       onMouseEnter={onMouseEnter}
       onTouchStart={onTouchStart}
       data-testid={`tile-${tile.row}-${tile.col}`}
+      data-row={tile.row}
+      data-col={tile.col}
     >
       {tile.letter}
     </div>
