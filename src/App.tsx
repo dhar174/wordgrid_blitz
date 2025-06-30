@@ -7,11 +7,15 @@ import ThemeSelector from './components/ThemeSelector';
 import { THEMES } from './constants';
 
 const App: React.FC = () => {
-    const [theme, setTheme] = useState<Theme>(THEMES[0]);
+    const [theme, setTheme] = useState<Theme>(() => {
+        const stored = localStorage.getItem('wordgrid_theme');
+        return THEMES.find(t => t.name === stored) || THEMES[0];
+    });
     const { gameState, startGame, currentWord, path, handleInteractionStart, handleInteractionMove, handleInteractionEnd, applyPowerUp, lastBonus } = useGameEngine();
 
     const handleThemeChange = (newTheme: Theme) => {
         setTheme(newTheme);
+        localStorage.setItem('wordgrid_theme', newTheme.name);
     };
 
     const renderGameState = () => {
